@@ -209,6 +209,9 @@ app.put('/api/updateProfile', async (req, res) => {
     try {
         const { firstName, lastName, nickname, email, dateOfBirth, password, profilePicture, isAnonymous } = req.body;
         
+        console.log('Update profile request for:', email);
+        console.log('Has profile picture:', !!profilePicture, profilePicture ? `(${profilePicture.length} chars)` : '');
+        
         // Build update query dynamically
         let updateFields = [];
         let values = [];
@@ -232,6 +235,7 @@ app.put('/api/updateProfile', async (req, res) => {
         if (profilePicture !== undefined) {
             updateFields.push('profile_picture = ?');
             values.push(profilePicture);
+            console.log('Adding profile picture to update');
         }
         if (isAnonymous !== undefined) {
             updateFields.push('is_anonymous = ?');
@@ -250,10 +254,13 @@ app.put('/api/updateProfile', async (req, res) => {
         
         values.push(email);
         
-        await pool.query(
-            `UPDATE users SET ${updateFields.join(', ')} WHERE email = ?`,
-            values
-        );
+        const query = `UPDATE users SET ${updateFields.join(', ')} WHERE email = ?`;
+        console.log('Executing query:', query);
+        console.log('Update fields:', updateFields.join(', '));
+        
+        const [result] = await pool.query(query, values);
+        
+        console.log('Update result:', result);
         
         res.status(200).json({ success: true, message: 'Profile updated successfully' });
     } catch (error) {
