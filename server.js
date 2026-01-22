@@ -131,10 +131,20 @@ app.post('/api/login', async (req, res) => {
             { expiresIn: '7d' }
         );
 
+        // Return user profile data along with token
         res.status(200).json({
             message: 'Login successful',
             token: token,
-            userId: user.id
+            userId: user.id,
+            profile: {
+                firstName: user.first_name,
+                lastName: user.last_name,
+                nickname: user.nickname,
+                email: user.email,
+                dateOfBirth: user.date_of_birth,
+                profilePicture: user.profile_picture,
+                isAnonymous: user.is_anonymous
+            }
         });
     } catch (error) {
         console.error('Login error:', error);
@@ -189,6 +199,42 @@ app.post('/api/register', async (req, res) => {
         });
     } catch (error) {
         console.error('Registration error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Get User Profile Route
+app.get('/api/profile', async (req, res) => {
+    try {
+        const email = req.query.email;
+        
+        if (!email) {
+            return res.status(400).json({ message: 'Email is required' });
+        }
+
+        const [rows] = await pool.query(
+            'SELECT id, email, first_name, last_name, nickname, date_of_birth, profile_picture, is_anonymous FROM users WHERE email = ?',
+            [email]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const user = rows[0];
+        res.status(200).json({
+            profile: {
+                firstName: user.first_name,
+                lastName: user.last_name,
+                nickname: user.nickname,
+                email: user.email,
+                dateOfBirth: user.date_of_birth,
+                profilePicture: user.profile_picture,
+                isAnonymous: user.is_anonymous
+            }
+        });
+    } catch (error) {
+        console.error('Get profile error:', error);
         res.status(500).json({ message: 'Server error' });
     }
 });

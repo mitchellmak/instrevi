@@ -54,15 +54,23 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     .then(response => response.json())
     .then(data => {
         if (data.token) {
-            // Store token and user info in localStorage or sessionStorage
+            // Store token and user info
             if (remember) {
                 localStorage.setItem('authToken', data.token);
                 localStorage.setItem('userId', data.userId);
                 localStorage.setItem('userEmail', email);
+                // Store profile data if available
+                if (data.profile) {
+                    localStorage.setItem('userProfile', JSON.stringify(data.profile));
+                }
             } else {
                 sessionStorage.setItem('authToken', data.token);
                 sessionStorage.setItem('userId', data.userId);
                 sessionStorage.setItem('userEmail', email);
+                // Store profile data if available
+                if (data.profile) {
+                    sessionStorage.setItem('userProfile', JSON.stringify(data.profile));
+                }
             }
             
             // Show success message
