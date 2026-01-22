@@ -60,6 +60,25 @@ async function initDatabase() {
             )
         `);
         
+        // Create reviews table if it doesn't exist
+        await connection.query(`
+            CREATE TABLE IF NOT EXISTS reviews (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                review_type ENUM('items', 'food', 'service', 'unboxing') NOT NULL,
+                image_data LONGTEXT,
+                item_description VARCHAR(255),
+                food_description VARCHAR(255),
+                brand VARCHAR(255),
+                shop_name VARCHAR(255),
+                shop_address VARCHAR(255),
+                review_description TEXT,
+                rating INT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            )
+        `);
+        
         // Check and add missing columns for existing tables
         const [columns] = await connection.query(`
             SELECT COLUMN_NAME 
@@ -314,6 +333,49 @@ app.put('/api/updateProfile', async (req, res) => {
         res.status(200).json({ success: true, message: 'Profile updated successfully' });
     } catch (error) {
         console.error('Update profile error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Submit Review
+app.post('/api/reviews', async (req, res) => {
+    try {
+        const { userId, type, image, itemDescription, foodDescription, brand, shopName, shopAddress, reviewDescription, rating } = req.body;
+        
+        if (!userId || !type || !image) {
+            return res.status(400).json({ message: 'User ID, review type, and image are required' });
+        }
+        
+        const [result] = await pool.query(
+            `INSERT INTO reviews (user_id, review_type, image_data, item_description, food_description, brand, shop_name, shop_address, review_description, rating)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [userId, type, image, itemDescription || null, foodDescription || null, brand || null, shopName || null, shopAddress || null, reviewDescription || null, rating || null]
+        );
+        
+        res.status(201).json({ 
+            success: true, 
+            message: 'Review submitted successfully',
+            reviewId: result.insertId
+        });
+    } catch (error) {
+        console.error('Submit review error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Get All Reviews
+app.get('/api/reviews', async (req, res) => {
+    try {
+        const [reviews] = await pool.query(
+            `SELECT r.*, u.email, u.first_name, u.last_name, u.nickname, u.profile_picture, u.is_anonymous
+            FROM reviews r
+            JOIN users u ON r.user_id = u.id
+            ORDER BY r.created_at DESC`
+        );
+        
+        res.json(reviews);
+    } catch (error) {
+        console.error('Get reviews error:', error);
         res.status(500).json({ message: 'Server error' });
     }
 });

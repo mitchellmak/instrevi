@@ -53,49 +53,62 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     })
     .then(response => response.json())
     .then(data => {
+        console.log('Login response:', data); // Debug
         if (data.token) {
             // Store token and user info
-            if (remember) {
-                localStorage.setItem('authToken', data.token);
-                localStorage.setItem('userId', data.userId);
-                localStorage.setItem('userEmail', email);
-                // Store profile data if available
-                if (data.profile) {
-                    localStorage.setItem('userProfile', JSON.stringify(data.profile));
-                }
+            const storage = remember ? localStorage : sessionStorage;
+            storage.setItem('authToken', data.token);
+            storage.setItem('userId', data.userId);
+            storage.setItem('userEmail', email);
+            
+            // Store profile data if available
+            if (data.profile) {
+                console.log('Saving profile data:', data.profile); // Debug
+                storage.setItem('userProfile', JSON.stringify(data.profile));
+                redirectToHome();
             } else {
-                sessionStorage.setItem('authToken', data.token);
-                sessionStorage.setItem('userId', data.userId);
-                sessionStorage.setItem('userEmail', email);
-                // Store profile data if available
-                if (data.profile) {
-                    sessionStorage.setItem('userProfile', JSON.stringify(data.profile));
-                }
+                console.log('No profile data in response, fetching from API'); // Debug
+                // Fetch profile data separately
+                fetch(`https://instrevi.onrender.com/api/profile?email=${encodeURIComponent(email)}`)
+                    .then(res => res.json())
+                    .then(profileData => {
+                        if (profileData.profile) {
+                            console.log('Fetched profile data:', profileData.profile);
+                            storage.setItem('userProfile', JSON.stringify(profileData.profile));
+                        }
+                        redirectToHome();
+                    })
+                    .catch(err => {
+                        console.error('Error fetching profile:', err);
+                        redirectToHome();
+                    });
             }
-            
-            // Show success message
-            const successMsg = document.getElementById('successMessage');
-            successMsg.textContent = 'Login successful! Redirecting...';
-            successMsg.classList.add('show');
-            
-            // Redirect after 2 seconds
-            setTimeout(() => {
-                window.location.href = 'home.html';
-            }, 2000);
         } else {
             document.getElementById('emailError').textContent = data.message || 'Login failed';
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Login';
         }
     })
     .catch(error => {
         console.error('Login error:', error);
         document.getElementById('emailError').textContent = 'Network error. Please try again.';
-    })
-    .finally(() => {
-        // Reset button
         submitBtn.disabled = false;
         submitBtn.textContent = 'Login';
     });
 });
+
+// Helper function to redirect to home
+function redirectToHome() {
+    // Show success message
+    const successMsg = document.getElementById('successMessage');
+    successMsg.textContent = 'Login successful! Redirecting...';
+    successMsg.classList.add('show');
+    
+    // Redirect after 1 second
+    setTimeout(() => {
+        window.location.href = 'feed.html';
+    }, 1000);
+}
 
 // Email validation function
 function isValidEmail(email) {

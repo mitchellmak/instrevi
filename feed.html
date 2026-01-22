@@ -9,8 +9,8 @@
     <meta name="apple-mobile-web-app-title" content="Instrevi">
     <meta name="theme-color" content="#262626">
     <title>Instrevi - Home</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <!-- <link rel="manifest" href="manifest.json"> -->
+    <!-- <link rel="apple-touch-icon" href="icons/icon-192x192.png"> -->
     <link rel="stylesheet" href="instagram-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -55,7 +55,7 @@
         <div class="feed">
             <!-- Stories Section -->
             <div class="stories">
-                <div class="story">
+                <div class="story" id="reviewItBtn" style="cursor: pointer;">
                     <div class="story-avatar">
                         <i class="fas fa-plus"></i>
                     </div>
@@ -245,7 +245,62 @@
         </aside>
     </div>
 
-    <script src="instagram-script.js"></script>
-    <script src="pwa-register.js"></script>
+    <!-- Review Modal -->
+    <div id="reviewModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; overflow-y: auto;">
+        <div style="background: white; margin: 50px auto; max-width: 600px; border-radius: 12px; padding: 0; position: relative;">
+            <!-- Modal Header -->
+            <div style="padding: 20px; border-bottom: 1px solid #dbdbdb; display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="margin: 0; font-size: 18px; font-weight: 600;">Create Review</h2>
+                <button onclick="closeReviewModal()" style="background: none; border: none; font-size: 28px; cursor: pointer; color: #262626; padding: 0; width: 30px; height: 30px;">&times;</button>
+            </div>
+            
+            <!-- Modal Content -->
+            <div style="padding: 20px;">
+                <!-- Step 1: Image Upload -->
+                <div id="imageUploadStep">
+                    <input type="file" id="reviewImageInput" accept="image/*,video/*" capture="environment" style="display: none;">
+                    <div id="imagePreview" style="min-height: 200px; border: 2px dashed #dbdbdb; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; padding: 40px; text-align: center;" onclick="document.getElementById('reviewImageInput').click();">
+                        <i class="fas fa-camera" style="font-size: 48px; color: #8e8e8e; margin-bottom: 16px;"></i>
+                        <p style="color: #262626; font-weight: 600; margin: 0 0 8px 0;">Add Photo or Video</p>
+                        <p style="color: #8e8e8e; font-size: 14px; margin: 0;">Click to open camera or gallery</p>
+                    </div>
+                </div>
+
+                <!-- Step 2: Review Type Selection -->
+                <div id="reviewTypeStep" style="display: none; margin-top: 20px;">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">Select Review Type</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                        <button onclick="selectReviewType('items')" class="review-type-btn" style="padding: 16px; border: 2px solid #dbdbdb; border-radius: 8px; background: white; cursor: pointer; font-weight: 600; transition: all 0.2s;">
+                            <i class="fas fa-box" style="display: block; font-size: 24px; margin-bottom: 8px; color: #0095f6;"></i>
+                            Items
+                        </button>
+                        <button onclick="selectReviewType('food')" class="review-type-btn" style="padding: 16px; border: 2px solid #dbdbdb; border-radius: 8px; background: white; cursor: pointer; font-weight: 600; transition: all 0.2s;">
+                            <i class="fas fa-utensils" style="display: block; font-size: 24px; margin-bottom: 8px; color: #0095f6;"></i>
+                            Food
+                        </button>
+                        <button onclick="selectReviewType('service')" class="review-type-btn" style="padding: 16px; border: 2px solid #dbdbdb; border-radius: 8px; background: white; cursor: pointer; font-weight: 600; transition: all 0.2s;">
+                            <i class="fas fa-concierge-bell" style="display: block; font-size: 24px; margin-bottom: 8px; color: #0095f6;"></i>
+                            Service
+                        </button>
+                        <button onclick="selectReviewType('unboxing')" class="review-type-btn" style="padding: 16px; border: 2px solid #dbdbdb; border-radius: 8px; background: white; cursor: pointer; font-weight: 600; transition: all 0.2s;">
+                            <i class="fas fa-gift" style="display: block; font-size: 24px; margin-bottom: 8px; color: #0095f6;"></i>
+                            Unboxing
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Review Form -->
+                <div id="reviewFormStep" style="display: none; margin-top: 20px;">
+                    <form id="reviewForm">
+                        <div id="reviewFormFields"></div>
+                        <button type="submit" style="width: 100%; padding: 12px; background: #0095f6; color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 16px; cursor: pointer; margin-top: 20px;">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="instagram-script.js?v=7"></script>
+    <!-- <script src="pwa-register.js"></script> -->
 </body>
 </html>

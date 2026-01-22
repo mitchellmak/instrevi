@@ -141,36 +141,48 @@ function updateProfileAvatars(imageData) {
     }
 }
 
-// Initialize upload functionality
-initializeProfilePictureUpload();
-
-// Toggle password visibility
-document.getElementById('togglePassword').addEventListener('click', function(e) {
-    e.preventDefault();
-    togglePasswordField('password', 'togglePassword');
-});
-
-document.getElementById('toggleConfirmPassword').addEventListener('click', function(e) {
-    e.preventDefault();
-    togglePasswordField('confirmPassword', 'toggleConfirmPassword');
-});
+// Initialize password toggles
+function initializePasswordToggles() {
+    const togglePassword = document.getElementById('togglePassword');
+    const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+    
+    if (togglePassword) {
+        togglePassword.addEventListener('click', function(e) {
+            e.preventDefault();
+            togglePasswordField('password', 'togglePassword');
+        });
+    }
+    
+    if (toggleConfirmPassword) {
+        toggleConfirmPassword.addEventListener('click', function(e) {
+            e.preventDefault();
+            togglePasswordField('confirmPassword', 'toggleConfirmPassword');
+        });
+    }
+}
 
 function togglePasswordField(fieldId, buttonId) {
     const input = document.getElementById(fieldId);
     const button = document.getElementById(buttonId);
     
-    if (input.type === 'password') {
-        input.type = 'text';
-        button.innerHTML = '<i class="fas fa-eye-slash"></i>';
-    } else {
-        input.type = 'password';
-        button.innerHTML = '<i class="fas fa-eye"></i>';
+    if (input && button) {
+        if (input.type === 'password') {
+            input.type = 'text';
+            button.innerHTML = '<i class="fas fa-eye-slash"></i>';
+        } else {
+            input.type = 'password';
+            button.innerHTML = '<i class="fas fa-eye"></i>';
+        }
     }
 }
 
-// Form submission
-document.getElementById('profileForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+// Initialize form submission
+function initializeFormSubmission() {
+    const form = document.getElementById('profileForm');
+    if (!form) return;
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
     
     // Get old profile data to compare changes
     const savedProfile = localStorage.getItem('userProfile');
@@ -297,7 +309,8 @@ document.getElementById('profileForm').addEventListener('submit', function(e) {
     
     // Save profile data
     saveProfile(firstName, lastName, nickname, email, dateOfBirth, password, isAnonymous, profilePicture, updatedFields);
-});
+    });
+}
 
 // Save profile data
 function saveProfile(firstName, lastName, nickname, email, dateOfBirth, password, isAnonymous, profilePicture, updatedFields) {
@@ -322,7 +335,12 @@ function saveProfile(firstName, lastName, nickname, email, dateOfBirth, password
     
     if (profilePicture) {
         updateData.profilePicture = profilePicture;
+        console.log('Saving profile picture, size:', profilePicture.length);
+    } else {
+        console.log('No profile picture to save');
     }
+    
+    console.log('Sending update data:', { ...updateData, profilePicture: profilePicture ? 'base64 data (' + profilePicture.length + ' chars)' : null });
     
     // Send update request to backend
     fetch('https://instrevi.onrender.com/api/updateProfile', {
@@ -335,6 +353,7 @@ function saveProfile(firstName, lastName, nickname, email, dateOfBirth, password
     })
     .then(response => response.json())
     .then(data => {
+        console.log('Server response:', data);
         if (data.success || data.message === 'Profile updated successfully') {
             // Save profile locally as well
             const profileData = {
@@ -466,8 +485,10 @@ function isValidEmail(email) {
 
 function showError(elementId, message) {
     const errorElement = document.getElementById(elementId);
-    errorElement.textContent = message;
-    errorElement.classList.add('show');
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.classList.add('show');
+    }
 }
 
 function clearErrorMessages() {
@@ -478,18 +499,34 @@ function clearErrorMessages() {
     });
 }
 
-// Logout functionality
-document.getElementById('logoutBtn').addEventListener('click', function() {
-    // Clear stored credentials
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userProfile');
-    sessionStorage.removeItem('authToken');
-    sessionStorage.removeItem('userId');
-    sessionStorage.removeItem('userEmail');
-    sessionStorage.removeItem('userProfile');
-    
-    // Redirect to login page
-    window.location.href = 'index.html';
-});
+// Initialize edit again button
+function initializeEditAgainButton() {
+    const editBtn = document.getElementById('editAgainBtn');
+    if (editBtn) {
+        editBtn.addEventListener('click', function() {
+            document.getElementById('profileForm').style.display = 'block';
+            document.getElementById('profileDetailsSection').style.display = 'none';
+        });
+    }
+}
+
+// Initialize logout button
+function initializeLogoutButton() {
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            // Clear stored credentials
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userProfile');
+            sessionStorage.removeItem('authToken');
+            sessionStorage.removeItem('userId');
+            sessionStorage.removeItem('userEmail');
+            sessionStorage.removeItem('userProfile');
+            
+            // Redirect to login page
+            window.location.href = 'index.html';
+        });
+    }
+}
