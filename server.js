@@ -57,25 +57,32 @@ async function initDatabase() {
             )
         `);
         
-        // Add columns if they don't exist (for existing tables)
-        const columns = [
-            { name: 'first_name', type: 'VARCHAR(100)' },
-            { name: 'last_name', type: 'VARCHAR(100)' },
-            { name: 'nickname', type: 'VARCHAR(100)' },
-            { name: 'profile_picture', type: 'LONGTEXT' },
-            { name: 'date_of_birth', type: 'DATE' },
-            { name: 'is_anonymous', type: 'BOOLEAN DEFAULT FALSE' }
-        ];
+        // Check and add missing columns for existing tables
+        const [columns] = await connection.query(`
+            SELECT COLUMN_NAME 
+            FROM INFORMATION_SCHEMA.COLUMNS 
+            WHERE TABLE_SCHEMA = DATABASE() 
+            AND TABLE_NAME = 'users'
+        `);
         
-        for (const col of columns) {
-            try {
-                await connection.query(`
-                    ALTER TABLE users ADD COLUMN IF NOT EXISTS ${col.name} ${col.type}
-                `);
-            } catch (err) {
-                // Column might already exist, ignore error
-                if (!err.message.includes('Duplicate column')) {
-                    console.log(`Column ${col.name} check:`, err.message);
+        const existingColumns = columns.map(col => col.COLUMN_NAME);
+        
+        const requiredColumns = {
+            'first_name': 'VARCHAR(100)',
+            'last_name': 'VARCHAR(100)',
+            'nickname': 'VARCHAR(100)',
+            'profile_picture': 'LONGTEXT',
+            'date_of_birth': 'DATE',
+            'is_anonymous': 'BOOLEAN DEFAULT FALSE'
+        };
+        
+        for (const [colName, colType] of Object.entries(requiredColumns)) {
+            if (!existingColumns.includes(colName)) {
+                try {
+                    await connection.query(`ALTER TABLE users ADD COLUMN ${colName} ${colType}`);
+                    console.log(`Added column: ${colName}`);
+                } catch (err) {
+                    console.error(`Error adding column ${colName}:`, err.message);
                 }
             }
         }
