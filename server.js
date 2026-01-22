@@ -18,8 +18,12 @@ app.use(cors({
 app.use(express.static(__dirname));
 
 // MySQL Connection Pool
-const pool = mysql.createPool(
-    process.env.MYSQL_URL || process.env.DATABASE_URL || {
+let poolConfig;
+if (process.env.MYSQL_URL || process.env.DATABASE_URL) {
+    const dbUrl = process.env.MYSQL_URL || process.env.DATABASE_URL;
+    poolConfig = dbUrl;
+} else {
+    poolConfig = {
         host: process.env.DB_HOST || 'localhost',
         user: process.env.DB_USER || 'root',
         password: process.env.DB_PASSWORD || '',
@@ -27,8 +31,10 @@ const pool = mysql.createPool(
         waitForConnections: true,
         connectionLimit: 10,
         queueLimit: 0
-    }
-);
+    };
+}
+
+const pool = mysql.createPool(poolConfig);
 
 // Initialize Database Table
 async function initDatabase() {
