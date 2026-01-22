@@ -243,7 +243,7 @@ app.get('/api/profile', async (req, res) => {
 app.get('/api/users', async (req, res) => {
     try {
         const [users] = await pool.query(
-            'SELECT id, email, nickname, profile_picture, is_anonymous, created_at FROM users ORDER BY created_at DESC LIMIT 5'
+            'SELECT id, email, first_name, nickname, profile_picture, is_anonymous, created_at FROM users ORDER BY created_at DESC LIMIT 5'
         );
         
         res.status(200).json({ users: users });
