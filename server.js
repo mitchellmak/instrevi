@@ -154,6 +154,20 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
+// Get Users Route (for suggestions)
+app.get('/api/users', async (req, res) => {
+    try {
+        const [users] = await pool.query(
+            'SELECT id, email, created_at FROM users ORDER BY created_at DESC LIMIT 5'
+        );
+        
+        res.status(200).json({ users: users });
+    } catch (error) {
+        console.error('Get users error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {

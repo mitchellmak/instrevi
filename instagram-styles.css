@@ -392,8 +392,9 @@ body {
     background: white;
     border: 1px solid #dbdbdb;
     border-radius: 8px;
-    padding: 16px;
+    padding: 12px;
     margin-bottom: 20px;
+    font-size: 13px;
 }
 
 .suggestions-header {
@@ -419,7 +420,13 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
+}
+
+.suggestion-item .avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
 }
 
 .suggestion-info {
@@ -428,12 +435,12 @@ body {
 
 .suggestion-info .username {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
     margin-bottom: 2px;
 }
 
 .follow-status {
-    font-size: 12px;
+    font-size: 11px;
     color: #65676b;
 }
 

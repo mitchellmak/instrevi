@@ -59,7 +59,80 @@ window.addEventListener('load', function() {
     } else {
         console.log('No profile picture found'); // Debug
     }
+    
+    // Load user suggestions
+    loadUserSuggestions();
 });
+
+// Load user suggestions from database
+async function loadUserSuggestions() {
+    try {
+        const response = await fetch('https://instrevi.onrender.com/api/users');
+        const data = await response.json();
+        
+        if (data.users && data.users.length > 0) {
+            const container = document.getElementById('suggestionsContainer');
+            container.innerHTML = '';
+            
+            // Get current user email to exclude from suggestions
+            const currentUserEmail = localStorage.getItem('userEmail') || sessionStorage.getItem('userEmail');
+            
+            // Color gradients for avatars
+            const gradients = [
+                'linear-gradient(135deg, #667eea, #764ba2)',
+                'linear-gradient(135deg, #f093fb, #f5576c)',
+                'linear-gradient(135deg, #4facfe, #00f2fe)',
+                'linear-gradient(135deg, #43e97b, #38f9d7)',
+                'linear-gradient(135deg, #fa709a, #fee140)'
+            ];
+            
+            let count = 0;
+            data.users.forEach((user, index) => {
+                // Skip current user and limit to 3 suggestions
+                if (user.email !== currentUserEmail && count < 3) {
+                    const username = user.email.split('@')[0];
+                    const initial = username.charAt(0).toUpperCase();
+                    const gradient = gradients[index % gradients.length];
+                    
+                    const suggestionHTML = `
+                        <div class="suggestion-item">
+                            <div class="avatar" style="background: ${gradient};">${initial}</div>
+                            <div class="suggestion-info">
+                                <p class="username">${username}</p>
+                                <p class="follow-status">New user</p>
+                            </div>
+                            <button class="follow-btn">Follow</button>
+                        </div>
+                    `;
+                    
+                    container.innerHTML += suggestionHTML;
+                    count++;
+                }
+            });
+            
+            // Re-attach follow button listeners
+            attachFollowButtonListeners();
+        }
+    } catch (error) {
+        console.error('Error loading suggestions:', error);
+    }
+}
+
+// Attach follow button listeners
+function attachFollowButtonListeners() {
+    const followButtons = document.querySelectorAll('.follow-btn');
+    followButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            if (this.textContent === 'Follow') {
+                this.textContent = 'Following';
+                this.style.color = '#262626';
+            } else {
+                this.textContent = 'Follow';
+                this.style.color = '#0a66c2';
+            }
+        });
+    });
+}
 
 // Dropdown menu toggle
 document.querySelector('.dropdown-toggle').addEventListener('click', function() {
@@ -101,20 +174,6 @@ likeButtons.forEach(button => {
         } else {
             this.innerHTML = '<i class="far fa-heart"></i>';
             this.style.color = '#262626';
-        }
-    });
-});
-
-// Follow button functionality
-const followButtons = document.querySelectorAll('.follow-btn');
-followButtons.forEach(button => {
-    button.addEventListener('click', function() {
-        if (this.textContent === 'Follow') {
-            this.textContent = 'Following';
-            this.style.color = '#262626';
-        } else {
-            this.textContent = 'Follow';
-            this.style.color = '#0a66c2';
         }
     });
 });

@@ -202,11 +202,13 @@ body {
 .upload-avatar {
     border: 2px dashed #7ba85c;
     border-radius: 8px;
-    padding: 2rem;
+    padding: 1rem;
     text-align: center;
     cursor: pointer;
     transition: all 0.2s;
     background-color: #f5f5f5;
+    max-width: 250px;
+    margin: 0 auto;
 }
 
 .upload-avatar:hover {
@@ -215,7 +217,7 @@ body {
 }
 
 .upload-avatar i {
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: #7ba85c;
     margin-bottom: 0.5rem;
     display: block;
@@ -224,6 +226,7 @@ body {
 .upload-avatar p {
     color: #8a8a8a;
     margin: 0;
+    font-size: 0.9rem;
 }
 
 /* Checkbox Style */

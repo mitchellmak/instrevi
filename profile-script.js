@@ -430,7 +430,23 @@ function displayProfileDetails(firstName, lastName, nickname, email, dateOfBirth
     // Profile picture
     if (profilePicture) {
         const pictureUpdated = updatedFields && updatedFields.profilePicture;
-        document.getElementById('detailAvatarDisplay').innerHTML = `<img src="${profilePicture}" style="width: 100%; height: 100%; object-fit: cover;">` + (pictureUpdated ? '<div class="updated-badge" style="margin-top: 0.5rem;">* updated</div>' : '');
+        const avatarContainer = document.getElementById('detailAvatarDisplay');
+        avatarContainer.innerHTML = `<img src="${profilePicture}" style="width: 100%; height: 100%; object-fit: cover;">`;
+        
+        // Add updated badge as separate element after the container
+        const detailItem = avatarContainer.closest('.detail-item');
+        const existingBadge = detailItem.querySelector('.picture-updated-badge');
+        if (existingBadge) {
+            existingBadge.remove();
+        }
+        if (pictureUpdated) {
+            const badge = document.createElement('span');
+            badge.className = 'updated-badge picture-updated-badge';
+            badge.textContent = '* updated';
+            badge.style.display = 'inline-block';
+            badge.style.marginLeft = '0.5rem';
+            detailItem.querySelector('strong').appendChild(badge);
+        }
     }
 }
 
