@@ -115,9 +115,17 @@ async function loadUserSuggestions() {
                 const initial = username.charAt(0).toUpperCase();
                 const gradient = gradients[index % gradients.length];
                 
+                // Use profile picture if available, otherwise use gradient avatar
+                let avatarHTML;
+                if (user.profile_picture) {
+                    avatarHTML = `<div class="avatar"><img src="${user.profile_picture}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>`;
+                } else {
+                    avatarHTML = `<div class="avatar" style="background: ${gradient};">${initial}</div>`;
+                }
+                
                 const suggestionHTML = `
                     <div class="suggestion-item">
-                        <div class="avatar" style="background: ${gradient};">${initial}</div>
+                        ${avatarHTML}
                         <div class="suggestion-info">
                             <p class="username">${username}</p>
                             <p class="follow-status">New user</p>
