@@ -325,7 +325,7 @@ function saveProfile(firstName, lastName, nickname, email, dateOfBirth, password
     }
     
     // Send update request to backend
-    fetch('http://192.168.18.71:3000/api/updateProfile', {
+    fetch('https://instrevi.onrender.com/api/updateProfile', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

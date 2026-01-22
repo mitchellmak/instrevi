@@ -12,7 +12,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors({
-    origin: ['http://192.168.18.71:8080', 'http://localhost:3000', 'http://127.0.0.1:8080'],
+    origin: ['http://192.168.18.71:8080', 'http://localhost:3000', 'http://127.0.0.1:8080', 'https://meethelp.sg', 'http://meethelp.sg'],
     credentials: true
 }));
 app.use(express.static(__dirname));

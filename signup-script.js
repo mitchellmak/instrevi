@@ -98,7 +98,7 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
     submitBtn.textContent = 'Creating Account...';
     
     // Send registration request to backend
-    fetch('http://192.168.18.71:3000/api/register', {
+    fetch('https://instrevi.onrender.com/api/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

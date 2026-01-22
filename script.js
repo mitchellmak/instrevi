@@ -41,7 +41,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     submitBtn.textContent = 'Logging in...';
     
     // Send login request to backend
-    fetch('http://192.168.18.71:3000/api/login', {
+    fetch('https://instrevi.onrender.com/api/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
