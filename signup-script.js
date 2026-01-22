@@ -149,7 +149,7 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
     })
     .catch(error => {
         console.error('Registration error:', error);
-        document.getElementById('emailError').textContent = 'Network error. Make sure the server is running on 192.168.18.71:3000';
+        document.getElementById('emailError').textContent = 'Network error. Please check your connection and try again.';
         submitBtn.disabled = false;
         submitBtn.textContent = 'Sign Up';
     });
