@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Instrevi">
+    <meta name="theme-color" content="#262626">
+    <title>Profile - Instrevi</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="stylesheet" href="profile-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <img src="logo.png" alt="Instrevi Logo" class="navbar-logo">
+            <a href="feed.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            <div class="nav-right">
+                <button id="logoutBtn" class="btn-logout">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-avatar" id="profileAvatarDisplay">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h1>Edit Profile</h1>
+            </div>
+
+            <form id="profileForm" class="profile-form">
+                <div class="form-section">
+                    <h2>Profile Picture</h2>
+                    
+                    <div class="profile-picture-upload">
+                        <div class="upload-avatar" id="uploadAvatar">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click or drag to upload</p>
+                        </div>
+                        <input 
+                            type="file" 
+                            id="profilePicture" 
+                            name="profilePicture" 
+                            accept="image/*"
+                            style="display: none;"
+                        >
+                        <span class="error-message" id="profilePictureError"></span>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Personal Information</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input 
+                                type="text" 
+                                id="firstName" 
+                                name="firstName" 
+                                placeholder="Enter your first name" 
+                                required
+                            >
+                            <span class="error-message" id="firstNameError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input 
+                                type="text" 
+                                id="lastName" 
+                                name="lastName" 
+                                placeholder="Enter your last name" 
+                                required
+                            >
+                            <span class="error-message" id="lastNameError"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nickname">Nickname</label>
+                        <input 
+                            type="text" 
+                            id="nickname" 
+                            name="nickname" 
+                            placeholder="Choose a nickname for your account"
+                        >
+                        <span class="error-message" id="nicknameError"></span>
+                    </div>
+
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="isAnonymous" name="isAnonymous">
+                        <label for="isAnonymous">Make my name anonymous (show nickname instead)</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="Enter your email" 
+                            required
+                        >
+                        <span class="error-message" id="emailError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateOfBirth">Date of Birth</label>
+                        <input 
+                            type="date" 
+                            id="dateOfBirth" 
+                            name="dateOfBirth" 
+                            required
+                        >
+                        <span class="error-message" id="dateOfBirthError"></span>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Security</h2>
+                    
+                    <div class="form-group">
+                        <label for="password">New Password</label>
+                        <div class="password-input-wrapper">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                placeholder="Leave blank to keep current password"
+                            >
+                            <button type="button" class="toggle-password" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <span class="error-message" id="passwordError"></span>
+                        <p class="help-text">Password must be at least 6 characters</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <div class="password-input-wrapper">
+                            <input 
+                                type="password" 
+                                id="confirmPassword" 
+                                name="confirmPassword" 
+                                placeholder="Confirm your new password"
+                            >
+                            <button type="button" class="toggle-password" id="toggleConfirmPassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <span class="error-message" id="confirmPasswordError"></span>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-save">Save Changes</button>
+                    <a href="feed.html" class="btn-cancel">Cancel</a>
+                </div>
+
+                <div class="success-message" id="successMessage"></div>
+            </form>
+
+            <!-- Profile Details Display -->
+            <div class="profile-details-section" id="profileDetailsSection" style="display: none;">
+                <h2>Your Profile</h2>
+                <div class="profile-details-content">
+                    <div class="detail-item">
+                        <strong>Profile Picture:</strong>
+                        <div class="detail-avatar" id="detailAvatarDisplay">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Display Name:</strong>
+                        <p id="detailDisplayName">-</p>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Nickname:</strong>
+                        <p id="detailNickname">-</p>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Email:</strong>
+                        <p id="detailEmail">-</p>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Date of Birth:</strong>
+                        <p id="detailDateOfBirth">-</p>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Anonymous Mode:</strong>
+                        <p id="detailAnonymous">-</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-edit" id="editAgainBtn">Edit Profile Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="profile-script.js"></script>
+    <script src="pwa-register.js"></script>
+</body>
+</html>

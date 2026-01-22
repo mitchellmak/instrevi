@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Debug - Instrevi</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .debug-box {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        h2 { color: #333; margin-top: 0; }
+        pre {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        button {
+            background: #9bc97f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #7ba85c;
+        }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Profile & Storage Debugger</h1>
+    
+    <div class="debug-box">
+        <h2>Auth Status</h2>
+        <div id="authStatus"></div>
+    </div>
+
+    <div class="debug-box">
+        <h2>User Profile Data</h2>
+        <div id="profileData"></div>
+    </div>
+
+    <div class="debug-box">
+        <h2>LocalStorage Contents</h2>
+        <div id="storageData"></div>
+    </div>
+
+    <div class="debug-box">
+        <h2>Actions</h2>
+        <button onclick="checkProfile()">🔄 Refresh Data</button>
+        <button onclick="clearProfile()">🗑️ Clear Profile</button>
+        <button onclick="testProfile()">🧪 Create Test Profile</button>
+        <button onclick="window.location.href='feed.html'">📱 Go to Feed</button>
+        <button onclick="window.location.href='profile.html'">👤 Edit Profile</button>
+    </div>
+
+    <script>
+        function checkProfile() {
+            // Auth Status
+            const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+            const userEmail = localStorage.getItem('userEmail') || sessionStorage.getItem('userEmail');
+            
+            const authDiv = document.getElementById('authStatus');
+            if (token) {
+                authDiv.innerHTML = `
+                    <p class="success">✓ Logged in</p>
+                    <p><strong>Email:</strong> ${userEmail || 'Not found'}</p>
+                    <p><strong>Token:</strong> ${token.substring(0, 20)}...</p>
+                `;
+            } else {
+                authDiv.innerHTML = `<p class="error">✗ Not logged in</p>`;
+            }
+
+            // Profile Data
+            const profileDiv = document.getElementById('profileData');
+            const savedProfile = localStorage.getItem('userProfile');
+            
+            if (savedProfile) {
+                try {
+                    const profile = JSON.parse(savedProfile);
+                    profileDiv.innerHTML = `
+                        <p class="success">✓ Profile found</p>
+                        <pre>${JSON.stringify(profile, null, 2)}</pre>
+                        <p><strong>Display Name:</strong> ${getDisplayName(profile, userEmail)}</p>
+                        <p><strong>Has Picture:</strong> ${profile.profilePicture ? 'Yes' : 'No'}</p>
+                    `;
+                } catch (error) {
+                    profileDiv.innerHTML = `
+                        <p class="error">✗ Error parsing profile</p>
+                        <pre>${error.message}</pre>
+                        <p>Raw data:</p>
+                        <pre>${savedProfile}</pre>
+                    `;
+                }
+            } else {
+                profileDiv.innerHTML = `
+                    <p class="error">✗ No profile data found</p>
+                    <p>Go to <a href="profile.html">Edit Profile</a> to create one</p>
+                `;
+            }
+
+            // All LocalStorage
+            const storageDiv = document.getElementById('storageData');
+            const allStorage = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                let value = localStorage.getItem(key);
+                
+                // Try to parse JSON
+                try {
+                    value = JSON.parse(value);
+                } catch (e) {
+                    // Keep as string
+                }
+                
+                allStorage[key] = value;
+            }
+            storageDiv.innerHTML = `<pre>${JSON.stringify(allStorage, null, 2)}</pre>`;
+        }
+
+        function getDisplayName(profile, email) {
+            if (profile.isAnonymous && profile.nickname) {
+                return profile.nickname;
+            } else if (profile.firstName) {
+                return profile.firstName;
+            } else if (email) {
+                return email.split('@')[0];
+            }
+            return 'User';
+        }
+
+        function clearProfile() {
+            if (confirm('Clear profile data? (Auth will be kept)')) {
+                localStorage.removeItem('userProfile');
+                alert('Profile cleared!');
+                checkProfile();
+            }
+        }
+
+        function testProfile() {
+            const testProfile = {
+                firstName: 'Test',
+                lastName: 'User',
+                nickname: 'TestNick',
+                email: localStorage.getItem('userEmail') || 'test@example.com',
+                dateOfBirth: '2000-01-01',
+                isAnonymous: false,
+                profilePicture: null
+            };
+            
+            localStorage.setItem('userProfile', JSON.stringify(testProfile));
+            alert('Test profile created!');
+            checkProfile();
+        }
+
+        // Auto-load on page load
+        window.addEventListener('load', checkProfile);
+    </script>
+</body>
+</html>

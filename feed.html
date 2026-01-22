@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Instrevi">
+    <meta name="theme-color" content="#262626">
+    <title>Instrevi - Home</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="stylesheet" href="instagram-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <img src="logo.png" alt="Instrevi Logo" class="navbar-logo">
+            
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search...">
+            </div>
+
+            <div class="nav-right">
+                <div class="nav-icons">
+                    <a href="#explore" title="Explore"><i class="fas fa-compass"></i></a>
+                    <a href="#likes" title="Notifications"><i class="fas fa-heart"></i></a>
+                    <a href="#messages" title="Messages"><i class="fas fa-paper-plane"></i></a>
+                </div>
+                
+                <div class="profile-section">
+                    <div class="profile-avatar" id="headerProfileAvatar" style="background: linear-gradient(135deg, #9bc97f, #7ba85c);">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span class="profile-name" id="headerUsername">User</span>
+                    <div class="dropdown">
+                        <button class="dropdown-toggle"><i class="fas fa-bars"></i></button>
+                        <div class="dropdown-menu">
+                            <a href="profile.html">Profile</a>
+                            <a href="#settings">Settings</a>
+                            <a href="#" id="logoutBtn">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Main Feed -->
+        <div class="feed">
+            <!-- Stories Section -->
+            <div class="stories">
+                <div class="story">
+                    <div class="story-avatar">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <p>Review it!</p>
+                </div>
+                <div class="story">
+                    <div class="story-avatar" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                        J
+                    </div>
+                    <p>john_doe</p>
+                </div>
+                <div class="story">
+                    <div class="story-avatar" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                        S
+                    </div>
+                    <p>sarah_smith</p>
+                </div>
+                <div class="story">
+                    <div class="story-avatar" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                        M
+                    </div>
+                    <p>mike_wilson</p>
+                </div>
+            </div>
+
+            <!-- Posts -->
+            <div class="posts">
+                <!-- Post 1 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="user-info">
+                            <div class="avatar" style="background: linear-gradient(135deg, #667eea, #764ba2);">JD</div>
+                            <div>
+                                <p class="username">john_doe</p>
+                                <p class="location">New York, USA</p>
+                            </div>
+                        </div>
+                        <button class="more-btn"><i class="fas fa-ellipsis-h"></i></button>
+                    </div>
+
+                    <div class="post-image">
+                        <div class="placeholder-image" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+
+                    <div class="post-actions">
+                        <div class="action-buttons">
+                            <button title="Like"><i class="far fa-heart"></i></button>
+                            <button title="Comment"><i class="far fa-comment"></i></button>
+                            <button title="Share"><i class="far fa-paper-plane"></i></button>
+                        </div>
+                        <button title="Save"><i class="far fa-bookmark"></i></button>
+                    </div>
+
+                    <div class="post-stats">
+                        <p><strong>1,234 likes</strong></p>
+                    </div>
+
+                    <div class="post-caption">
+                        <p><strong>john_doe</strong> Beautiful sunset at Central Park! 🌅 #newyork #sunset</p>
+                    </div>
+
+                    <div class="post-comments">
+                        <p><strong>sarah_smith:</strong> Amazing shot! 📸</p>
+                        <p><strong>mike_wilson:</strong> Stunning colors! ✨</p>
+                    </div>
+
+                    <div class="post-time">
+                        <p>2 hours ago</p>
+                    </div>
+                </div>
+
+                <!-- Post 2 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="user-info">
+                            <div class="avatar" style="background: linear-gradient(135deg, #f093fb, #f5576c);">SS</div>
+                            <div>
+                                <p class="username">sarah_smith</p>
+                                <p class="location">Los Angeles, USA</p>
+                            </div>
+                        </div>
+                        <button class="more-btn"><i class="fas fa-ellipsis-h"></i></button>
+                    </div>
+
+                    <div class="post-image">
+                        <div class="placeholder-image" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+
+                    <div class="post-actions">
+                        <div class="action-buttons">
+                            <button title="Like"><i class="far fa-heart"></i></button>
+                            <button title="Comment"><i class="far fa-comment"></i></button>
+                            <button title="Share"><i class="far fa-paper-plane"></i></button>
+                        </div>
+                        <button title="Save"><i class="far fa-bookmark"></i></button>
+                    </div>
+
+                    <div class="post-stats">
+                        <p><strong>2,567 likes</strong></p>
+                    </div>
+
+                    <div class="post-caption">
+                        <p><strong>sarah_smith</strong> Coffee and creativity ☕✨ #lifestyle #coffee</p>
+                    </div>
+
+                    <div class="post-comments">
+                        <p><strong>john_doe:</strong> Where is this from? 🤔</p>
+                    </div>
+
+                    <div class="post-time">
+                        <p>4 hours ago</p>
+                    </div>
+                </div>
+
+                <!-- Post 3 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="user-info">
+                            <div class="avatar" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">MW</div>
+                            <div>
+                                <p class="username">mike_wilson</p>
+                                <p class="location">San Francisco, USA</p>
+                            </div>
+                        </div>
+                        <button class="more-btn"><i class="fas fa-ellipsis-h"></i></button>
+                    </div>
+
+                    <div class="post-image">
+                        <div class="placeholder-image" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+
+                    <div class="post-actions">
+                        <div class="action-buttons">
+                            <button title="Like"><i class="far fa-heart"></i></button>
+                            <button title="Comment"><i class="far fa-comment"></i></button>
+                            <button title="Share"><i class="far fa-paper-plane"></i></button>
+                        </div>
+                        <button title="Save"><i class="far fa-bookmark"></i></button>
+                    </div>
+
+                    <div class="post-stats">
+                        <p><strong>892 likes</strong></p>
+                    </div>
+
+                    <div class="post-caption">
+                        <p><strong>mike_wilson</strong> Tech meetup was awesome! Great talks and networking 💻 #tech #startup</p>
+                    </div>
+
+                    <div class="post-comments">
+                        <p><strong>sarah_smith:</strong> Wish I was there! 😭</p>
+                    </div>
+
+                    <div class="post-time">
+                        <p>6 hours ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Suggestions -->
+            <div class="suggestions">
+                <div class="suggestions-header">
+                    <p>Suggestions For You</p>
+                    <a href="#">See All</a>
+                </div>
+
+                <div class="suggestion-item">
+                    <div class="avatar" style="background: linear-gradient(135deg, #667eea, #764ba2);">A</div>
+                    <div class="suggestion-info">
+                        <p class="username">alex_johnson</p>
+                        <p class="follow-status">Followed by john_doe</p>
+                    </div>
+                    <button class="follow-btn">Follow</button>
+                </div>
+
+                <div class="suggestion-item">
+                    <div class="avatar" style="background: linear-gradient(135deg, #f093fb, #f5576c);">E</div>
+                    <div class="suggestion-info">
+                        <p class="username">emma_wilson</p>
+                        <p class="follow-status">Popular</p>
+                    </div>
+                    <button class="follow-btn">Follow</button>
+                </div>
+
+                <div class="suggestion-item">
+                    <div class="avatar" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">D</div>
+                    <div class="suggestion-info">
+                        <p class="username">david_chen</p>
+                        <p class="follow-status">Followed by sarah_smith</p>
+                    </div>
+                    <button class="follow-btn">Follow</button>
+                </div>
+            </div>
+
+            <!-- Footer Links -->
+            <div class="sidebar-footer">
+                <a href="#">About</a>
+                <a href="#">Help</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+        </aside>
+    </div>
+
+    <script src="instagram-script.js"></script>
+    <script src="pwa-register.js"></script>
+</body>
+</html>

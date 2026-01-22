@@ -1,0 +1,285 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #9bc97f 0%, #7ba85c 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+.login-box {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.login-box h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.logo-image {
+    display: block;
+    margin: 0 auto 15px;
+    max-width: 250px;
+    height: auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="text"],
+.form-group input[type="date"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus,
+.form-group input[type="text"]:focus,
+.form-group input[type="date"]:focus {
+    outline: none;
+    border-color: #9bc97f;
+    box-shadow: 0 0 5px rgba(155, 201, 127, 0.3);
+}
+
+.form-group.checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.form-group.checkbox input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.form-group.checkbox label {
+    margin-bottom: 0;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.error-message {
+    display: block;
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 5px;
+    min-height: 16px;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #9bc97f 0%, #7ba85c 100%);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(155, 201, 127, 0.4);
+}
+
+.btn-login:active {
+    transform: translateY(0);
+}
+
+.btn-login:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.form-links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.form-links a {
+    color: #9bc97f;
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.3s ease;
+}
+
+.form-links a:hover {
+    color: #7ba85c;
+    text-decoration: underline;
+}
+
+.success-message {
+    display: none;
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.success-message.show {
+    display: block;
+}
+
+/* Mobile-First Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 20px 10px;
+        min-height: 100vh;
+        min-height: -webkit-fill-available; /* iOS Safari fix */
+    }
+
+    .login-container {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .login-box {
+        padding: 30px 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-box h1 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .logo-image {
+        max-width: 200px;
+        margin-bottom: 10px;
+    }
+
+    .form-group input {
+        font-size: 16px; /* Prevent zoom on iOS */
+        padding: 14px 15px;
+    }
+
+    .btn-login {
+        padding: 14px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .login-box {
+        padding: 25px 18px;
+        border-radius: 8px;
+    }
+
+    .login-box h1 {
+        font-size: 20px;
+        margin-bottom: 18px;
+    }
+
+    .logo-image {
+        max-width: 180px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-links {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .form-links a {
+        display: block;
+        text-align: center;
+    }
+}
+
+/* Touch-friendly mobile styles */
+@media (hover: none) and (pointer: coarse) {
+    .btn-login:hover {
+        transform: none;
+    }
+
+    .btn-login:active {
+        transform: scale(0.98);
+    }
+
+    /* Ensure touch targets are at least 44x44px */
+    .form-group.checkbox input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+    }
+
+    .form-links a {
+        padding: 8px;
+        display: inline-block;
+    }
+}
+
+/* Safe area for notched phones */
+@supports (padding: env(safe-area-inset-bottom)) {
+    body {
+        padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    }
+}
+
+/* Prevent zoom on input focus (iOS) */
+@media screen and (max-width: 768px) {
+    input, select, textarea {
+        font-size: 16px !important;
+    }
+}

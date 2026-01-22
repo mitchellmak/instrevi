@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Instrevi">
+    <meta name="theme-color" content="#262626">
+    <title>Home - Instrevi</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="stylesheet" href="home-styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <img src="logo.png" alt="Instrevi Logo" class="navbar-logo">
+            <div class="nav-links">
+                <span id="userEmail" class="user-email"></span>
+                <button id="logoutBtn" class="btn-logout">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="welcome-section">
+            <h1>Welcome to Instrevi</h1>
+            <p id="welcomeMessage"></p>
+        </div>
+
+        <div class="dashboard">
+            <div class="card">
+                <h2>Your Account</h2>
+                <p>Email: <strong id="displayEmail"></strong></p>
+                <p>Member since: <strong id="joinDate"></strong></p>
+            </div>
+
+            <div class="card">
+                <h2>Quick Links</h2>
+                <ul>
+                    <li><a href="#profile">View Profile</a></li>
+                    <li><a href="#settings">Account Settings</a></li>
+                    <li><a href="#help">Help & Support</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="home-script.js"></script>
+    <script src="pwa-register.js"></script>
+</body>
+</html>
