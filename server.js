@@ -47,6 +47,12 @@ async function initDatabase() {
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 email VARCHAR(255) UNIQUE NOT NULL,
                 password VARCHAR(255) NOT NULL,
+                first_name VARCHAR(100),
+                last_name VARCHAR(100),
+                nickname VARCHAR(100),
+                profile_picture LONGTEXT,
+                date_of_birth DATE,
+                is_anonymous BOOLEAN DEFAULT FALSE,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
@@ -158,12 +164,70 @@ app.post('/api/register', async (req, res) => {
 app.get('/api/users', async (req, res) => {
     try {
         const [users] = await pool.query(
-            'SELECT id, email, created_at FROM users ORDER BY created_at DESC LIMIT 5'
+            'SELECT id, email, nickname, profile_picture, is_anonymous, created_at FROM users ORDER BY created_at DESC LIMIT 5'
         );
         
         res.status(200).json({ users: users });
     } catch (error) {
         console.error('Get users error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Update Profile Route
+app.put('/api/updateProfile', async (req, res) => {
+    try {
+        const { firstName, lastName, nickname, email, dateOfBirth, password, profilePicture, isAnonymous } = req.body;
+        
+        // Build update query dynamically
+        let updateFields = [];
+        let values = [];
+        
+        if (firstName !== undefined) {
+            updateFields.push('first_name = ?');
+            values.push(firstName);
+        }
+        if (lastName !== undefined) {
+            updateFields.push('last_name = ?');
+            values.push(lastName);
+        }
+        if (nickname !== undefined) {
+            updateFields.push('nickname = ?');
+            values.push(nickname);
+        }
+        if (dateOfBirth !== undefined) {
+            updateFields.push('date_of_birth = ?');
+            values.push(dateOfBirth);
+        }
+        if (profilePicture !== undefined) {
+            updateFields.push('profile_picture = ?');
+            values.push(profilePicture);
+        }
+        if (isAnonymous !== undefined) {
+            updateFields.push('is_anonymous = ?');
+            values.push(isAnonymous);
+        }
+        if (password) {
+            const salt = await bcryptjs.genSalt(10);
+            const hashedPassword = await bcryptjs.hash(password, salt);
+            updateFields.push('password = ?');
+            values.push(hashedPassword);
+        }
+        
+        if (updateFields.length === 0) {
+            return res.status(400).json({ message: 'No fields to update' });
+        }
+        
+        values.push(email);
+        
+        await pool.query(
+            `UPDATE users SET ${updateFields.join(', ')} WHERE email = ?`,
+            values
+        );
+        
+        res.status(200).json({ success: true, message: 'Profile updated successfully' });
+    } catch (error) {
+        console.error('Update profile error:', error);
         res.status(500).json({ message: 'Server error' });
     }
 });
