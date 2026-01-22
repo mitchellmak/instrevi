@@ -66,55 +66,83 @@ window.addEventListener('load', function() {
 
 // Load user suggestions from database
 async function loadUserSuggestions() {
+    console.log('Loading user suggestions...'); // Debug
+    const container = document.getElementById('suggestionsContainer');
+    
+    if (!container) {
+        console.error('Suggestions container not found!');
+        return;
+    }
+    
     try {
         const response = await fetch('https://instrevi.onrender.com/api/users');
-        const data = await response.json();
+        console.log('API response status:', response.status); // Debug
         
-        if (data.users && data.users.length > 0) {
-            const container = document.getElementById('suggestionsContainer');
-            container.innerHTML = '';
+        if (!response.ok) {
+            throw new Error('API request failed');
+        }
+        
+        const data = await response.json();
+        console.log('Users data:', data); // Debug
+        
+        if (!data.users || data.users.length === 0) {
+            container.innerHTML = '<p style="color: #8a8a8a; font-size: 12px; padding: 10px;">No users yet</p>';
+            return;
+        }
+        
+        container.innerHTML = '';
+        
+        // Get current user email to exclude from suggestions
+        const currentUserEmail = localStorage.getItem('userEmail') || sessionStorage.getItem('userEmail');
+        console.log('Current user email:', currentUserEmail); // Debug
+        
+        // Color gradients for avatars
+        const gradients = [
+            'linear-gradient(135deg, #667eea, #764ba2)',
+            'linear-gradient(135deg, #f093fb, #f5576c)',
+            'linear-gradient(135deg, #4facfe, #00f2fe)',
+            'linear-gradient(135deg, #43e97b, #38f9d7)',
+            'linear-gradient(135deg, #fa709a, #fee140)'
+        ];
+        
+        let count = 0;
+        data.users.forEach((user, index) => {
+            console.log('Processing user:', user.email, 'Current:', currentUserEmail, 'Match:', user.email === currentUserEmail); // Debug
             
-            // Get current user email to exclude from suggestions
-            const currentUserEmail = localStorage.getItem('userEmail') || sessionStorage.getItem('userEmail');
-            
-            // Color gradients for avatars
-            const gradients = [
-                'linear-gradient(135deg, #667eea, #764ba2)',
-                'linear-gradient(135deg, #f093fb, #f5576c)',
-                'linear-gradient(135deg, #4facfe, #00f2fe)',
-                'linear-gradient(135deg, #43e97b, #38f9d7)',
-                'linear-gradient(135deg, #fa709a, #fee140)'
-            ];
-            
-            let count = 0;
-            data.users.forEach((user, index) => {
-                // Skip current user and limit to 3 suggestions
-                if (user.email !== currentUserEmail && count < 3) {
-                    const username = user.email.split('@')[0];
-                    const initial = username.charAt(0).toUpperCase();
-                    const gradient = gradients[index % gradients.length];
-                    
-                    const suggestionHTML = `
-                        <div class="suggestion-item">
-                            <div class="avatar" style="background: ${gradient};">${initial}</div>
-                            <div class="suggestion-info">
-                                <p class="username">${username}</p>
-                                <p class="follow-status">New user</p>
-                            </div>
-                            <button class="follow-btn">Follow</button>
+            // Skip current user and limit to 3 suggestions
+            if (user.email !== currentUserEmail && count < 3) {
+                const username = user.email.split('@')[0];
+                const initial = username.charAt(0).toUpperCase();
+                const gradient = gradients[index % gradients.length];
+                
+                const suggestionHTML = `
+                    <div class="suggestion-item">
+                        <div class="avatar" style="background: ${gradient};">${initial}</div>
+                        <div class="suggestion-info">
+                            <p class="username">${username}</p>
+                            <p class="follow-status">New user</p>
                         </div>
-                    `;
-                    
-                    container.innerHTML += suggestionHTML;
-                    count++;
-                }
-            });
-            
+                        <button class="follow-btn">Follow</button>
+                    </div>
+                `;
+                
+                container.innerHTML += suggestionHTML;
+                count++;
+                console.log('Added user:', username, 'Count:', count); // Debug
+            }
+        });
+        
+        console.log('Total users added:', count); // Debug
+        
+        if (count === 0) {
+            container.innerHTML = '<p style="color: #8a8a8a; font-size: 12px; padding: 10px;">No other users yet</p>';
+        } else {
             // Re-attach follow button listeners
             attachFollowButtonListeners();
         }
     } catch (error) {
         console.error('Error loading suggestions:', error);
+        container.innerHTML = '<p style="color: #ff0000; font-size: 12px; padding: 10px;">Error loading users</p>';
     }
 }
 
