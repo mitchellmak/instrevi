@@ -488,6 +488,7 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
     sessionStorage.removeItem('authToken');
     sessionStorage.removeItem('userId');
     sessionStorage.removeItem('userEmail');
+    sessionStorage.removeItem('userProfile');
     
     // Redirect to login page
     window.location.href = 'index.html';

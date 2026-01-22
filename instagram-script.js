@@ -142,7 +142,10 @@ async function loadUserSuggestions() {
         }
     } catch (error) {
         console.error('Error loading suggestions:', error);
-        container.innerHTML = '<p style="color: #ff0000; font-size: 12px; padding: 10px;">Error loading users</p>';
+        console.error('Error details:', error.message, error.stack);
+        if (container) {
+            container.innerHTML = '<p style="color: #ff0000; font-size: 12px; padding: 10px;">Error: ' + error.message + '</p>';
+        }
     }
 }
 
@@ -183,9 +186,11 @@ document.getElementById('logoutBtn').addEventListener('click', function(e) {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userId');
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('userProfile');
     sessionStorage.removeItem('authToken');
     sessionStorage.removeItem('userId');
     sessionStorage.removeItem('userEmail');
+    sessionStorage.removeItem('userProfile');
     
     // Redirect to login page
     window.location.href = 'index.html';
